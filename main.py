@@ -53,6 +53,12 @@ def loadChatModel(name):
    return model
 chat = loadChatModel("gpt-3.5-turbo")
 
+def restart():
+    st.session_state('generated')
+
+refresh = st.sidebar.button("Refresh Topic")
+
+if refresh:
 
 
 def findSearch(input):
@@ -70,6 +76,7 @@ def findSearch(input):
     searchChain = LLMChain(llm=llm, prompt=prompt)
     search = searchChain.run(input)
     return search
+
 
 def confirmSearch(titles):
     confirmText = """
@@ -126,7 +133,7 @@ def generateResponse(query):
     chain = LLMChain(llm=chat, prompt=chatPrompt)
 
     response = chain.run(
-        title=st.session_state['titles'][0],
+        title=st.session_state['title'],
         text=fullText,
         query=query
     )
@@ -155,30 +162,14 @@ if userInput:
         summaries = langWiki.run(search)
         pages = summaries.split("\n")
         
-        titles = []
-        #for page in pages:
         title = pages[0][6 :]
-        titles.append(title)
         
-        st.session_state['titles'] = titles
+        st.session_state['title'] = title
 
-        if len(titles) > 1:
-            confirmSearch(titles)
-        else:
-            handleTitle(title)
-            st.session_state['generated'].append("What would you like to know about " + title)
+        handleTitle(title)
+        st.session_state['generated'].append("What would you like to know about " + title)
 
-    elif userInput.isdigit():
-        #if not first user input and is a number, then the user is picking their title out of the list of titles
-        if int(userInput) > len(st.session_state['titles'])-1 or int(userInput) < 0:
-            st.session_state['generated'].append("That number doesn't seem to correlate with a title. Try and input a different number.")
-        else:
-            title = st.session_state['titles'][int(userInput)]
-            st.session_state['generated'].append("What would you like to know about " + title)
-            handleTitle(title)
-    
     else:
-        #have to make sure that a title was chosen and the user is not skipping the step
         response = generateResponse(userInput)
         st.session_state['generated'].append(response)
 
