@@ -77,19 +77,6 @@ def findSearch(input):
     search = searchChain.run(input)
     return search
 
-
-def confirmSearch(titles):
-    confirmText = """
-    I've found mutliple results from my wikipedia search. Which of these titles are the one you're looking for? Repond with the number associated with the title you're choosing.
-    """
-
-    count = 0
-    for title in titles:
-        confirmText += str(count) + " : " + title + "\n"
-        count+=1
-
-    st.session_state['generated'].append(confirmText)
-
 def getWikiPage(title):
     page = wiki.page(title)
     return page
