@@ -6,8 +6,6 @@ from streamlit_chat import message
 
 import wikipediaapi
 
-from serpapi import GoogleSearch
-
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI
 from langchain.vectorstores import FAISS
@@ -28,8 +26,6 @@ from langchain.prompts.chat import (
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-serpKey = os.getenv("serpApiKey")
 
 embeddings = OpenAIEmbeddings()
 langWiki = WikipediaAPIWrapper()
