@@ -54,12 +54,12 @@ def loadChatModel(name):
 chat = loadChatModel("gpt-3.5-turbo")
 
 def restart():
-    st.session_state('generated')
+    st.session_state['generated'] = ["Hi! What topic do you want to learn about today?"]
+    st.session_state['past'] = []
+    st.session_state['input'] = ""
 
 refresh = st.sidebar.button("Refresh Topic")
-
-if refresh:
-
+if refresh: restart()
 
 def findSearch(input):
     urlTemplate = """
@@ -135,7 +135,7 @@ def setUp():
     st.session_state['titles'] = None
 
 def getInput():
-    input = st.text_input("Talk to me here")
+    input = st.text_input("Talk to me here", key="input")
     return input
 
 userInput = getInput()
